@@ -1,4 +1,4 @@
-#include <Windows.h>
+#include <cstring>
 #include <iomanip>
 #include <iostream>
 #include <algorithm>
