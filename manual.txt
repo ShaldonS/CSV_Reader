@@ -1,3 +1,7 @@
-Compile and run with commands
+Compile and run with commands 
+Windows:
 g++ main.cpp
 ./a test.csv
+Linux (Ubuntu):
+g++ main.cpp
+./a.out test.csv
