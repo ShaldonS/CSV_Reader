@@ -31,7 +31,7 @@ public:
 				std::cout << "\b\b\n";
 			}
 			if (row_ == 0) {
-				std::cout << get_column_name_by_pos(std::stoi(it.second)) << ","; // FIX
+				std::cout << get_column_name_by_pos(std::stoi(it.second)) << ",";
 			}
 			else 
 				std::cout << it.second << ",";
