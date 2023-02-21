@@ -31,7 +31,7 @@ public:
 				std::cout << "\b \n";
 			}
 			if (row_ == 0) {
-				std::cout << get_column_name_by_pos(std::stoi(it.second)) << ",";
+				std::cout << get_column_name_by_pos(std::stoi(it.second)) << ","; 
 			}
 			else 
 				std::cout << it.second << ",";
@@ -63,12 +63,12 @@ public:
 			}
 
 			std::stringstream stream(line);
-			int count_of_commas = std::count(line.begin(), line.end(), ',');
+			int count_of_commas = std::count(line.begin(), line.end(), ';');
 			if (count_of_commas > max_commas) {
 				max_commas = count_of_commas+1;
 			}
 			for (int i(0); i < count_of_commas + 1; ++i) {
-				std::getline(stream, cell_text, ',');
+				std::getline(stream, cell_text, ';');
 
 				if (col == 0) { // adding 0's column
 					csv_table.insert(std::make_pair(std::make_pair(row, col), std::to_string(row)));
@@ -84,6 +84,14 @@ public:
 					if (succesful_fields == 0) {
 						std::cout << "Error: Wrong cell on row: " << row << " col: " << col 
 							<< ". Not a number or Wrong formula. Exit...\n";
+						return false;
+					}
+					if (cell_text.find('+') != std::string::npos 
+						|| cell_text.find('-') != std::string::npos
+						|| cell_text.find('/') != std::string::npos 
+						|| cell_text.find('*') != std::string::npos) {
+						std::cout << "Error: Wrong cell on row: " << row << " col: " << col
+							<< ". Wrong formula: missing sign '='. Exit...\n";
 						return false;
 					}
 				}
@@ -148,9 +156,14 @@ private:
 					if (it != csv_table.end())
 						operand_1 = std::atof(it->second.c_str());
 					else {
-						std::cout << "Error: Operand 1 in formula " << expression 
-							<< " is incorrect. Cell was not found. Exit...\n";
-						return false;
+						int some_int;
+						int succesful_fields = sscanf(row.c_str(), "%d", &some_int);
+						if (succesful_fields == 0) {
+							std::cout << "Error: Operand 1 in formula " << expression
+								<< " is incorrect. Cell was not found. Exit...\n";
+							return false;
+						}
+						operand_1 = std::atof(row.c_str());
 					}
 					row = "";
 					col = "";
@@ -168,9 +181,14 @@ private:
 					if (it != csv_table.end())
 						operand_2 = std::atof(it->second.c_str());
 					else {
-						std::cout << "Error: Operand 2 in formula " << expression
-							<< " is incorrect. Cell was not found. Exit...\n";
-						return false;
+						int some_int;
+						int succesful_fields = sscanf(row.c_str(), "%d", &some_int);
+						if (succesful_fields == 0) {
+							std::cout << "Error: Operand 2 in formula " << expression
+								<< " is incorrect. Cell was not found. Exit...\n";
+							return false;
+						}
+						operand_2 = std::atof(row.c_str());
 					}
 
 					switch (ch1) {
@@ -198,6 +216,7 @@ private:
 			ss << new_val;
 			iter->second = ss.str();
 			formulas.pop();
+			ss.str(""); // clear stringstream
 		}
 		return true;
 	}
