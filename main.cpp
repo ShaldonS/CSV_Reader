@@ -28,7 +28,7 @@ public:
 			row_ = it.first.first;
 
 			if (row_ != row_old) {
-				std::cout << "\b\b\n";
+				std::cout << "\b \n";
 			}
 			if (row_ == 0) {
 				std::cout << get_column_name_by_pos(std::stoi(it.second)) << ",";
@@ -37,7 +37,7 @@ public:
 				std::cout << it.second << ",";
 			row_old = it.first.first;
 		}
-		std::cout << "\b\b\n";
+		std::cout << "\b \n";
 	}
 
 	bool read_CSV_file(const char* filename) { // reading the SCV file (also filling csv_table)
